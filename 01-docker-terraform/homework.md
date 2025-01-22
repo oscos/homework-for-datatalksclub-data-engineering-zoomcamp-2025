@@ -11,6 +11,28 @@ What's the version of `pip` in the image?
 - 23.3.1
 - 23.2.1
 
+Answer: `24.3.1`
+
+Proof of Work:
+```console
+oscos@dedt02:~/de_zoomcamp/01-docker-terraform/2_docker_sql$ docker run -it --entrypoint=bash python:3.12.8
+Unable to find image 'python:3.12.8' locally
+3.12.8: Pulling from library/python
+fd0410a2d1ae: Pull complete 
+bf571be90f05: Pull complete 
+684a51896c82: Pull complete 
+fbf93b646d6b: Pull complete 
+5f16749b32ba: Pull complete 
+e00350058e07: Pull complete 
+eb52a57aa542: Pull complete 
+Digest: sha256:5893362478144406ee0771bd9c38081a185077fb317ba71d01b7567678a89708
+Status: Downloaded newer image for python:3.12.8
+root@1ebd24d1d615:/# pip list
+Package Version
+------- -------
+pip     24.3.1
+```
+
 ## Question 2. Understanding Docker networking and docker-compose
 
 Given the following `docker-compose.yaml`, what is the `hostname` and `port` that **pgadmin** should use to connect to the postgres database?
