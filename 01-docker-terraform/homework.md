@@ -11,11 +11,11 @@ What's the version of `pip` in the image?
 - 23.3.1
 - 23.2.1
 
-Answer: `24.3.1`
+## Answer: `24.3.1`
 
 Proof of Work:
 ```console
-oscos@dedt02:~/de_zoomcamp/01-docker-terraform/2_docker_sql$ docker run -it --entrypoint=bash python:3.12.8
+oscos@dedt02:~/de_zoomcamp/01-docker-terraform/homework_q1$ docker run -it --entrypoint=bash python:3.12.8
 Unable to find image 'python:3.12.8' locally
 3.12.8: Pulling from library/python
 fd0410a2d1ae: Pull complete 
@@ -76,6 +76,64 @@ volumes:
 - db:5432
 
 If there are more than one answers, select only one of them
+
+## Answer: `db:5432`
+
+### Host Name Explanation:
+
+While running both the service name `db` and the container_name `postgres` returned the same results, I believe the service name is preferred.
+
+#### Proof of Work:
+
+Using `ping` to check for hostname and network connectivity:
+
+```console
+oscos@dedt02:~/de_zoomcamp/01-docker-terraform/homework_q2$ docker exec -it pgadmin /bin/sh
+/pgadmin4 $ ping db
+PING db (172.20.0.2): 56 data bytes
+64 bytes from 172.20.0.2: seq=0 ttl=42 time=0.069 ms
+64 bytes from 172.20.0.2: seq=1 ttl=42 time=0.058 ms
+64 bytes from 172.20.0.2: seq=2 ttl=42 time=0.079 ms
+^C
+--- db ping statistics ---
+3 packets transmitted, 3 packets received, 0% packet loss
+round-trip min/avg/max = 0.058/0.068/0.079 ms
+/pgadmin4 $ ping postgres
+PING postgres (172.20.0.2): 56 data bytes
+64 bytes from 172.20.0.2: seq=0 ttl=42 time=0.060 ms
+64 bytes from 172.20.0.2: seq=1 ttl=42 time=0.070 ms
+64 bytes from 172.20.0.2: seq=2 ttl=42 time=0.172 ms
+^C
+--- postgres ping statistics ---
+3 packets transmitted, 3 packets received, 0% packet loss
+round-trip min/avg/max = 0.060/0.100/0.172 ms
+/pgadmin4 $ 
+```
+
+Use `getent hosts` to resolve the hostname to its ip address:
+
+```console
+oscos@dedt02:~/de_zoomcamp/01-docker-terraform/homework_q2$ docker exec -it pgadmin /bin/sh
+/pgadmin4 $ getent hosts db
+172.20.0.2        db  db
+/pgadmin4 $ getent hosts postgres
+172.20.0.2        postgres  postgres
+/pgadmin4 $ 
+```
+
+### Port Number Explanation:
+
+Within the docker compose network, the internal port is used.
+
+#### Proof of Work:
+
+```
+/pgadmin4 $ nc -zv db 5432
+db (172.20.0.2:5432) open
+/pgadmin4 $ nc -zv postgres 5432
+postgres (172.20.0.2:5432) open
+/pgadmin4 $ 
+```
 
 ##  Prepare Postgres
 
