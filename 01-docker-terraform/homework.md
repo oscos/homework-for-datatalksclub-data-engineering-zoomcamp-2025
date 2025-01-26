@@ -13,8 +13,8 @@ What's the version of `pip` in the image?
 
 ## Answer: `24.3.1`
 
-Proof of Work:
-```console
+### Proof of Work:
+```bash
 oscos@dedt02:~/de_zoomcamp/01-docker-terraform/homework_q1$ docker run -it --entrypoint=bash python:3.12.8
 Unable to find image 'python:3.12.8' locally
 3.12.8: Pulling from library/python
@@ -83,11 +83,11 @@ If there are more than one answers, select only one of them
 
 While running both the service name `db` and the container_name `postgres` returned the same results, I believe the service name is preferred.
 
-#### Proof of Work:
+### Proof of Work:
 
 Using `ping` to check for hostname and network connectivity:
 
-```console
+```bash
 oscos@dedt02:~/de_zoomcamp/01-docker-terraform/homework_q2$ docker exec -it pgadmin /bin/sh
 /pgadmin4 $ ping db
 PING db (172.20.0.2): 56 data bytes
@@ -125,7 +125,7 @@ oscos@dedt02:~/de_zoomcamp/01-docker-terraform/homework_q2$ docker exec -it pgad
 
 Within the docker compose network, the internal port is used.
 
-#### Proof of Work:
+### Proof of Work:
 
 ```
 /pgadmin4 $ nc -zv db 5432
@@ -174,52 +174,89 @@ Answers:
 
 ## Answer: `104,802;  198,924;  109,603;  27,678;  35,189`
 
-Proof of Work: 
+### Proof of Work: 
+
+### Q3.1
 ```SQL
--- Q3.1 -- 104,802
 SELECT COUNT(*)
 FROM green_taxi_trips AS g
 WHERE 
-	g.lpep_pickup_datetime >= '2019-10-01 00:00:00' and lpep_dropoff_datetime < '2019-11-01 00:00:00' -- 104802
+	g.lpep_pickup_datetime >= '2019-10-01 00:00:00' 
+	AND 
+	lpep_dropoff_datetime < '2019-11-01 00:00:00'
 	AND 
 	trip_distance <= 1
 LIMIT 1;
 
--- Q3.2 -- 198,924
+-- Query Result: 104,802
+```
+
+## Q3.2
+```sql
 SELECT COUNT(*)
 FROM green_taxi_trips AS g
 WHERE 
-	g.lpep_pickup_datetime >= '2019-10-01 00:00:00' and lpep_dropoff_datetime < '2019-11-01 00:00:00' -- 104802
+	g.lpep_pickup_datetime >= '2019-10-01 00:00:00'
+	AND
+	lpep_dropoff_datetime < '2019-11-01 00:00:00'
 	AND 
-	trip_distance > 1 AND trip_distance <= 3
+	trip_distance > 1 
+	AND 
+	trip_distance <= 3
 LIMIT 1;
 
--- Q3.3 -- 109,603
+-- Query Result: 198,924 
+```
+
+
+## Q3.3
+```sql
 SELECT COUNT(*) 
 FROM green_taxi_trips AS g
 WHERE 
-	g.lpep_pickup_datetime >= '2019-10-01 00:00:00' and lpep_dropoff_datetime < '2019-11-01 00:00:00' -- 104802
+	g.lpep_pickup_datetime >= '2019-10-01 00:00:00' 
+	AND
+	lpep_dropoff_datetime < '2019-11-01 00:00:00'
 	AND 
-	trip_distance > 3 AND trip_distance <= 7
+	trip_distance > 3 
+	AND 
+	trip_distance <= 7
 LIMIT 1;
 
--- Q3.4 -- 27,678
+-- Query Result: 109,603
+```
+
+## Q3.4 
+```sql
 SELECT COUNT(*) 
 FROM green_taxi_trips AS g
 WHERE 
-	g.lpep_pickup_datetime >= '2019-10-01 00:00:00' and lpep_dropoff_datetime < '2019-11-01 00:00:00' -- 104802
+	g.lpep_pickup_datetime >= '2019-10-01 00:00:00' 
+	AND
+	lpep_dropoff_datetime < '2019-11-01 00:00:00'
 	AND 
-	trip_distance > 7 AND trip_distance <= 10
+	trip_distance > 7 
+	AND 
+	trip_distance <= 10
 LIMIT 1;
 
--- Q3.5 -- 35,189
+-- Query Result: 27,678
+```
+
+
+## Q3.5
+```sql
 SELECT COUNT(*) 
 FROM green_taxi_trips AS g
 WHERE 
-	g.lpep_pickup_datetime >= '2019-10-01 00:00:00' and lpep_dropoff_datetime < '2019-11-01 00:00:00' -- 104802
+	g.lpep_pickup_datetime >= '2019-10-01 00:00:00' 
+	AND 
+	lpep_dropoff_datetime < '2019-11-01 00:00:00'
 	AND 
 	trip_distance > 10
 LIMIT 1;
+
+-- Query Result: 35,189
 ```
 
 ## Question 4. Longest trip for each day
@@ -234,6 +271,23 @@ Tip: For every day, we only care about one single trip with the longest distance
 - 2019-10-26
 - 2019-10-31
 
+## Answer: 2019-10-31
+
+### Proof of Work
+
+## Q4
+```SQL
+SELECT g.lpep_pickup_datetime, trip_distance  
+FROM green_taxi_trips AS g
+ORDER BY trip_distance DESC
+LIMIT 1;
+```
+Query Results:
+
+| lpep_pickup_datetime | trip_distance |
+|----------------------|---------------|
+| 2019-10-31 23:23:41  | 515.89        |
+
 
 ## Question 5. Three biggest pickup zones
 
@@ -246,6 +300,32 @@ Consider only `lpep_pickup_datetime` when filtering by date.
 - East Harlem North, Morningside Heights
 - Morningside Heights, Astoria Park, East Harlem South
 - Bedford, East Harlem North, Astoria Park
+
+## Answer: East Harlem North, East Harlem South, Morningside Heights
+
+### Proof of Work:
+
+## Q5
+```sql
+SELECT q.* FROM 
+(
+	SELECT z."Zone", SUM(g.total_amount) AS sum_total_amount
+	FROM green_taxi_trips AS g
+	INNER JOIN taxi_zone_lookup AS z ON g."PULocationID" = z."LocationID"
+	WHERE 
+		g.lpep_pickup_datetime >= '2019-10-18 00:00:00' and g.lpep_pickup_datetime < '2019-10-19 00:00:00'
+	GROUP BY z."Zone"
+) AS q
+ORDER BY q.sum_total_amount DESC
+LIMIT 3;
+```
+Query Resuls:
+
+| Zone                 | sum_total_amount        |
+|----------------------|--------------------------|
+| East Harlem North    | 18686.680000000022       |
+| East Harlem South    | 16797.26000000007        |
+| Morningside Heights  | 13029.790000000045       |
 
 
 ## Question 6. Largest tip
@@ -263,6 +343,32 @@ We need the name of the zone, not the ID.
 - East Harlem North
 - East Harlem South
 
+## Answer: JFK Airport
+#### Proof of Work
+```sql
+SELECT 
+	p."Zone" AS "pick_up_zone", 
+	d."Zone" AS "drop_off_zone", 
+	g.tip_amount
+FROM green_taxi_trips AS g
+INNER JOIN taxi_zone_lookup AS p 
+	ON g."PULocationID" = p."LocationID"
+INNER JOIN taxi_zone_lookup AS d 
+	ON g."DOLocationID" = d."LocationID"
+WHERE 
+	g.lpep_pickup_datetime >= '2019-10-01 00:00:00'
+	AND 
+	g.lpep_pickup_datetime < '2019-11-01 00:00:00'
+	AND
+	p."Zone" = 'East Harlem North'
+ORDER BY g.tip_amount DESC
+LIMIT 1
+```
+Query Results:
+
+| pick_up_zone      | drop_off_zone | tip_amount |
+|-------------------|---------------|------------|
+| East Harlem North | JFK Airport   | 87.3       |
 
 ## Terraform
 
@@ -273,7 +379,6 @@ Copy the files from the course repo
 [here](../../../01-docker-terraform/1_terraform_gcp/terraform) to your VM/Laptop/GitHub Codespace.
 
 Modify the files as necessary to create a GCP Bucket and Big Query Dataset.
-
 
 ## Question 7. Terraform Workflow
 
