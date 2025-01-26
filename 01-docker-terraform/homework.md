@@ -172,6 +172,55 @@ Answers:
 - 104,793;  202,661;  109,603;  27,678;  35,189
 - 104,838;  199,013;  109,645;  27,688;  35,202
 
+## Answer: `104,802;  198,924;  109,603;  27,678;  35,189`
+
+Proof of Work: 
+```SQL
+-- Q3.1 -- 104,802
+SELECT COUNT(*)
+FROM green_taxi_trips AS g
+WHERE 
+	g.lpep_pickup_datetime >= '2019-10-01 00:00:00' and lpep_dropoff_datetime < '2019-11-01 00:00:00' -- 104802
+	AND 
+	trip_distance <= 1
+LIMIT 1;
+
+-- Q3.2 -- 198,924
+SELECT COUNT(*)
+FROM green_taxi_trips AS g
+WHERE 
+	g.lpep_pickup_datetime >= '2019-10-01 00:00:00' and lpep_dropoff_datetime < '2019-11-01 00:00:00' -- 104802
+	AND 
+	trip_distance > 1 AND trip_distance <= 3
+LIMIT 1;
+
+-- Q3.3 -- 109,603
+SELECT COUNT(*) 
+FROM green_taxi_trips AS g
+WHERE 
+	g.lpep_pickup_datetime >= '2019-10-01 00:00:00' and lpep_dropoff_datetime < '2019-11-01 00:00:00' -- 104802
+	AND 
+	trip_distance > 3 AND trip_distance <= 7
+LIMIT 1;
+
+-- Q3.4 -- 27,678
+SELECT COUNT(*) 
+FROM green_taxi_trips AS g
+WHERE 
+	g.lpep_pickup_datetime >= '2019-10-01 00:00:00' and lpep_dropoff_datetime < '2019-11-01 00:00:00' -- 104802
+	AND 
+	trip_distance > 7 AND trip_distance <= 10
+LIMIT 1;
+
+-- Q3.5 -- 35,189
+SELECT COUNT(*) 
+FROM green_taxi_trips AS g
+WHERE 
+	g.lpep_pickup_datetime >= '2019-10-01 00:00:00' and lpep_dropoff_datetime < '2019-11-01 00:00:00' -- 104802
+	AND 
+	trip_distance > 10
+LIMIT 1;
+```
 
 ## Question 4. Longest trip for each day
 
