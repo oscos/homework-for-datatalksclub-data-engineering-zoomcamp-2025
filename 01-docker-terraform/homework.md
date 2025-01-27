@@ -11,7 +11,8 @@ What's the version of `pip` in the image?
 - 23.3.1
 - 23.2.1
 
-## Answer: `24.3.1`
+## Answer: 
+> 24.3.1
 
 ### Proof of Work:
 ```bash
@@ -77,7 +78,8 @@ volumes:
 
 If there are more than one answers, select only one of them
 
-## Answer: `db:5432`
+## Answer: 
+> db:5432
 
 ### Host Name Explanation:
 
@@ -172,7 +174,8 @@ Answers:
 - 104,793;  202,661;  109,603;  27,678;  35,189
 - 104,838;  199,013;  109,645;  27,688;  35,202
 
-## Answer: `104,802;  198,924;  109,603;  27,678;  35,189`
+## Answer: 
+> 104,802;  198,924;  109,603;  27,678;  35,189
 
 ### Proof of Work: 
 
@@ -207,7 +210,6 @@ LIMIT 1;
 
 -- Query Result: 198,924 
 ```
-
 
 ## Q3.3
 ```sql
@@ -271,7 +273,8 @@ Tip: For every day, we only care about one single trip with the longest distance
 - 2019-10-26
 - 2019-10-31
 
-## Answer: 2019-10-31
+## Answer: 
+> 2019-10-31
 
 ### Proof of Work
 
@@ -301,7 +304,8 @@ Consider only `lpep_pickup_datetime` when filtering by date.
 - Morningside Heights, Astoria Park, East Harlem South
 - Bedford, East Harlem North, Astoria Park
 
-## Answer: East Harlem North, East Harlem South, Morningside Heights
+## Answer: 
+> East Harlem North, East Harlem South, Morningside Heights
 
 ### Proof of Work:
 
@@ -343,7 +347,9 @@ We need the name of the zone, not the ID.
 - East Harlem North
 - East Harlem South
 
-## Answer: JFK Airport
+## Answer: 
+> JFK Airport
+
 #### Proof of Work
 ```sql
 SELECT 
@@ -394,6 +400,203 @@ Answers:
 - terraform init, terraform apply -auto-approve, terraform destroy
 - terraform import, terraform apply -y, terraform rm
 
+## Answer: 
+> terraform init, terraform apply -auto-approve, terraform destroy
+
+### Proof of Work
+
+```bash
+oscos@dedt02:~/de_zoomcamp/01-docker-terraform/1_terraform$ terraform init
+Initializing the backend...
+Initializing provider plugins...
+- Finding hashicorp/google versions matching "6.16.0"...
+- Installing hashicorp/google v6.16.0...
+- Installed hashicorp/google v6.16.0 (signed by HashiCorp)
+Terraform has created a lock file .terraform.lock.hcl to record the provider
+selections it made above. Include this file in your version control repository
+so that Terraform can guarantee to make the same selections by default when
+you run "terraform init" in the future.
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+oscos@dedt02:~/de_zoomcamp/01-docker-terraform/1_terraform$ terraform apply -auto-approve
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # google_storage_bucket.demo-bucket-01 will be created
+  + resource "google_storage_bucket" "demo-bucket-01" {
+      + effective_labels            = {
+          + "goog-terraform-provisioned" = "true"
+        }
+      + force_destroy               = true
+      + id                          = (known after apply)
+      + location                    = "US"
+      + name                        = "dezc2025-terra-demo-bucket-01"
+      + project                     = (known after apply)
+      + project_number              = (known after apply)
+      + public_access_prevention    = (known after apply)
+      + rpo                         = (known after apply)
+      + self_link                   = (known after apply)
+      + storage_class               = "STANDARD"
+      + terraform_labels            = {
+          + "goog-terraform-provisioned" = "true"
+        }
+      + uniform_bucket_level_access = (known after apply)
+      + url                         = (known after apply)
+
+      + lifecycle_rule {
+          + action {
+              + type          = "Delete"
+                # (1 unchanged attribute hidden)
+            }
+          + condition {
+              + age                    = 3
+              + matches_prefix         = []
+              + matches_storage_class  = []
+              + matches_suffix         = []
+              + with_state             = (known after apply)
+                # (3 unchanged attributes hidden)
+            }
+        }
+      + lifecycle_rule {
+          + action {
+              + type          = "AbortIncompleteMultipartUpload"
+                # (1 unchanged attribute hidden)
+            }
+          + condition {
+              + age                    = 1
+              + matches_prefix         = []
+              + matches_storage_class  = []
+              + matches_suffix         = []
+              + with_state             = (known after apply)
+                # (3 unchanged attributes hidden)
+            }
+        }
+
+      + soft_delete_policy (known after apply)
+
+      + versioning (known after apply)
+
+      + website (known after apply)
+    }
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+google_storage_bucket.demo-bucket-01: Creating...
+google_storage_bucket.demo-bucket-01: Creation complete after 2s [id=dezc2025-terra-demo-bucket-01]
+
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+
+oscos@dedt02:~/de_zoomcamp/01-docker-terraform/1_terraform$ terraform destroy
+google_storage_bucket.demo-bucket-01: Refreshing state... [id=dezc2025-terra-demo-bucket-01]
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # google_storage_bucket.demo-bucket-01 will be destroyed
+  - resource "google_storage_bucket" "demo-bucket-01" {
+      - default_event_based_hold    = false -> null
+      - effective_labels            = {
+          - "goog-terraform-provisioned" = "true"
+        } -> null
+      - enable_object_retention     = false -> null
+      - force_destroy               = true -> null
+      - id                          = "dezc2025-terra-demo-bucket-01" -> null
+      - labels                      = {} -> null
+      - location                    = "US" -> null
+      - name                        = "dezc2025-terra-demo-bucket-01" -> null
+      - project                     = "dezc2025" -> null
+      - project_number              = 575796905162 -> null
+      - public_access_prevention    = "inherited" -> null
+      - requester_pays              = false -> null
+      - rpo                         = "DEFAULT" -> null
+      - self_link                   = "https://www.googleapis.com/storage/v1/b/dezc2025-terra-demo-bucket-01" -> null
+      - storage_class               = "STANDARD" -> null
+      - terraform_labels            = {
+          - "goog-terraform-provisioned" = "true"
+        } -> null
+      - uniform_bucket_level_access = false -> null
+      - url                         = "gs://dezc2025-terra-demo-bucket-01" -> null
+
+      - hierarchical_namespace {
+          - enabled = false -> null
+        }
+
+      - lifecycle_rule {
+          - action {
+              - type          = "Delete" -> null
+                # (1 unchanged attribute hidden)
+            }
+          - condition {
+              - age                                     = 3 -> null
+              - days_since_custom_time                  = 0 -> null
+              - days_since_noncurrent_time              = 0 -> null
+              - matches_prefix                          = [] -> null
+              - matches_storage_class                   = [] -> null
+              - matches_suffix                          = [] -> null
+              - num_newer_versions                      = 0 -> null
+              - send_age_if_zero                        = false -> null
+              - send_days_since_custom_time_if_zero     = false -> null
+              - send_days_since_noncurrent_time_if_zero = false -> null
+              - send_num_newer_versions_if_zero         = false -> null
+              - with_state                              = "ANY" -> null
+                # (3 unchanged attributes hidden)
+            }
+        }
+      - lifecycle_rule {
+          - action {
+              - type          = "AbortIncompleteMultipartUpload" -> null
+                # (1 unchanged attribute hidden)
+            }
+          - condition {
+              - age                                     = 1 -> null
+              - days_since_custom_time                  = 0 -> null
+              - days_since_noncurrent_time              = 0 -> null
+              - matches_prefix                          = [] -> null
+              - matches_storage_class                   = [] -> null
+              - matches_suffix                          = [] -> null
+              - num_newer_versions                      = 0 -> null
+              - send_age_if_zero                        = false -> null
+              - send_days_since_custom_time_if_zero     = false -> null
+              - send_days_since_noncurrent_time_if_zero = false -> null
+              - send_num_newer_versions_if_zero         = false -> null
+              - with_state                              = "ANY" -> null
+                # (3 unchanged attributes hidden)
+            }
+        }
+
+      - soft_delete_policy {
+          - effective_time             = "2025-01-26T21:35:37.284Z" -> null
+          - retention_duration_seconds = 604800 -> null
+        }
+    }
+
+Plan: 0 to add, 0 to change, 1 to destroy.
+
+Do you really want to destroy all resources?
+  Terraform will destroy all your managed infrastructure, as shown above.
+  There is no undo. Only 'yes' will be accepted to confirm.
+
+  Enter a value: yes
+
+google_storage_bucket.demo-bucket-01: Destroying... [id=dezc2025-terra-demo-bucket-01]
+google_storage_bucket.demo-bucket-01: Destruction complete after 1s
+
+Destroy complete! Resources: 1 destroyed.
+oscos@dedt02:~/de_zoomcamp/01-docker-terraform/1_terraform$ 
+
+```
 
 ## Submitting the solutions
 
